@@ -22,4 +22,20 @@ class Task extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    // scope search by title or description
+    public function scopeSearch($query, $term)
+    {
+        $term = "%$term%";
+        $query->where(function ($query) use ($term) {
+            $query->where('title', 'like', $term)
+                  ->orWhere('description', 'like', $term);
+        });
+    }
+
+    // scope filter by status
+    public function scopeStatus($query, $status)
+    {
+        return $query->where('status', $status);
+    }
 }

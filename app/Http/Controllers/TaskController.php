@@ -7,17 +7,27 @@ use App\Models\Task;
 
 class TaskController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
-        $tasks = Task::with('user')->orderBy('created_at', 'desc')->paginate(10);
+        $tasks = Task::with('user')
+            // filter by keyword
+            ->when(request('keyword'), function ($query) {
+                $query->search(request('keyword'));
+            })
+
+            // filter by status
+            ->when(request('status'), function ($query) {
+                $query->status(request('status'));
+            })
+
+            // sort by created_at desc
+            ->orderBy('created_at', 'desc')
+
+            // paginate 10 items per page
+            ->paginate(10);
+
         return view('tasks.index', compact('tasks'));
     }
-
 
     public function create()
     {

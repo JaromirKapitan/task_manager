@@ -16,6 +16,36 @@
         </div>
     @endif
 
+    <form method="GET" action="{{ route('tasks.index') }}" class="flex items-center space-x-4 mb-6">
+        <!-- Kľúčové slovo -->
+        <div>
+            <label for="keyword" class="block text-sm font-medium text-gray-700">Kľúčové slovo</label>
+            <input type="text" name="keyword" id="keyword" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:w-64" value="{{ request('keyword') }}">
+        </div>
+
+        <!-- Stav -->
+        <div>
+            <label for="status" class="block text-sm font-medium text-gray-700">Stav</label>
+            <select name="status" id="status" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:w-40">
+                <option value="">Všetky</option>
+                <option value="todo" {{ request('status') == 'todo' ? 'selected' : '' }}>Todo</option>
+                <option value="doing" {{ request('status') == 'doing' ? 'selected' : '' }}>Doing</option>
+                <option value="done" {{ request('status') == 'done' ? 'selected' : '' }}>Done</option>
+            </select>
+        </div>
+
+        <!-- Tlačidlo filtrovania -->
+        <button type="submit" class="mt-auto px-6 py-2 bg-blue-500 text-white font-bold rounded-md hover:bg-blue-600">
+            Filter
+        </button>
+
+        <a href="{{ route('tasks.index') }}" class="mt-auto px-6 py-2 bg-gray-500 text-white font-bold rounded-md hover:bg-gray-600">
+            Zrušiť filter
+        </a>
+    </form>
+
+
+
     <section>
         {{-- table with tasks. and links to edit and delete task --}}
         <table class="min-w-full bg-white border border-gray-200">
@@ -24,6 +54,7 @@
                     <th class="px-4 py-2 border-b text-left">ID</th>
                     <th class="px-4 py-2 border-b text-left">Title</th>
                     <th class="px-4 py-2 border-b text-left">Description</th>
+                    <th class="px-4 py-2 border-b text-left">User</th>
                     <th class="px-4 py-2 border-b text-left">Status</th>
                     <th class="px-4 py-2 border-b text-right">Actions</th>
 
@@ -35,7 +66,8 @@
                         <td class="px-4 py-2 border-b">{{ $task->id }}</td>
                         <td class="px-4 py-2 border-b">{{ $task->title }}</td>
                         <td class="px-4 py-2 border-b">{{ $task->description }}</td>
-                        <td class="px-4 py-2 border-b">
+                        <td class="px-4 py-2 border-b">{{ $task->user->name }}</td>
+                        <td class="px-4 py-2 border-b w-24">
                             @if($task->status == 'todo')
                                 <span class="bg-yellow-200 text-yellow-800 px-2 py-1 rounded-full text-sm">To Do</span>
                             @elseif($task->status == 'doing')
@@ -44,7 +76,7 @@
                                 <span class="bg-green-200 text-green-800 px-2 py-1 rounded-full text-sm">Done</span>
                             @endif
 
-                        <td class="px-4 py-2 border-b text-right">
+                        <td class="px-4 py-2 border-b text-right w-32">
                             <a href="{{ route('tasks.edit', $task) }}" class="text-blue-500 hover:underline">Edit</a>
                             <form action="{{ route('tasks.destroy', $task) }}" method="POST" class="inline">
                                 @csrf
