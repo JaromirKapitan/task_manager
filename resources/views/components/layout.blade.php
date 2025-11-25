@@ -9,7 +9,7 @@
     <body class="bg-gray-100 text-gray-800">
     <div class="flex h-screen">
         <x-sidebar />
-        <main class="flex-1 p-6">
+        <main class="flex-1 p-6 overflow-y-auto">
             {{ $slot }}
         </main>
     </div>
