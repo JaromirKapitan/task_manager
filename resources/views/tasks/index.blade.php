@@ -17,20 +17,30 @@
     @endif
 
     <form method="GET" action="{{ route('tasks.index') }}" class="flex items-center space-x-4 mb-6">
-        <!-- Kľúčové slovo -->
         <div>
-            <label for="keyword" class="block text-sm font-medium text-gray-700">Kľúčové slovo</label>
+            <label for="keyword" class="block text-sm font-medium text-gray-700">Keyword</label>
             <input type="text" name="keyword" id="keyword" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:w-64" value="{{ request('keyword') }}">
         </div>
 
-        <!-- Stav -->
         <div>
-            <label for="status" class="block text-sm font-medium text-gray-700">Stav</label>
+            <label for="status" class="block text-sm font-medium text-gray-700">Status</label>
             <select name="status" id="status" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:w-40">
-                <option value="">Všetky</option>
+                <option value="">All</option>
                 @foreach(\App\Enums\TaskStatus::cases() as $status)
                     <option value="{{ $status->value }}" {{ request('status') == $status->value ? 'selected' : '' }}>
                         {{ $status->getTitle() }}
+                    </option>
+                @endforeach
+            </select>
+        </div>
+
+        <div>
+            <label for="user" class="block text-sm font-medium text-gray-700">User</label>
+            <select name="user_id" id="user_id" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:w-40">
+                <option value="">All</option>
+                @foreach(\App\Models\User::all() as $user)
+                    <option value="{{ $user->id }}" {{ request('user_id') == $user->id ? 'selected' : '' }}>
+                        {{ $user->name }}
                     </option>
                 @endforeach
             </select>
@@ -42,7 +52,7 @@
         </button>
 
         <a href="{{ route('tasks.index') }}" class="mt-auto px-6 py-2 bg-gray-500 text-white font-bold rounded-md hover:bg-gray-600">
-            Zrušiť filter
+            Cancel filter
         </a>
     </form>
 

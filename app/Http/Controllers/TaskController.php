@@ -20,6 +20,11 @@ class TaskController extends Controller
                 $query->status(request('status'));
             })
 
+            // filter by user
+            ->when(request('user_id'), function ($query) {
+                $query->where('user_id', request('user_id'));
+            })
+
             // sort by created_at desc
             ->orderBy('created_at', 'desc')
 
