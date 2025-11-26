@@ -38,4 +38,9 @@ class Task extends Model
     {
         return $query->where('status', $status);
     }
+
+    public function getStatusEnumAttribute()
+    {
+        return \App\Enums\TaskStatus::from($this->status);
+    }
 }

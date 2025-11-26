@@ -28,9 +28,11 @@
             <label for="status" class="block text-sm font-medium text-gray-700">Stav</label>
             <select name="status" id="status" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:w-40">
                 <option value="">Všetky</option>
-                <option value="todo" {{ request('status') == 'todo' ? 'selected' : '' }}>Todo</option>
-                <option value="doing" {{ request('status') == 'doing' ? 'selected' : '' }}>Doing</option>
-                <option value="done" {{ request('status') == 'done' ? 'selected' : '' }}>Done</option>
+                @foreach(\App\Enums\TaskStatus::cases() as $status)
+                    <option value="{{ $status->value }}" {{ request('status') == $status->value ? 'selected' : '' }}>
+                        {{ $status->getTitle() }}
+                    </option>
+                @endforeach
             </select>
         </div>
 
@@ -68,14 +70,8 @@
                         <td class="px-4 py-2 border-b">{{ $task->description }}</td>
                         <td class="px-4 py-2 border-b">{{ $task->user->name }}</td>
                         <td class="px-4 py-2 border-b w-24">
-                            @if($task->status == 'todo')
-                                <span class="bg-yellow-200 text-yellow-800 px-2 py-1 rounded-full text-sm">To Do</span>
-                            @elseif($task->status == 'doing')
-                                <span class="bg-blue-200 text-blue-800 px-2 py-1 rounded-full text-sm">Doing</span>
-                            @elseif($task->status == 'done')
-                                <span class="bg-green-200 text-green-800 px-2 py-1 rounded-full text-sm">Done</span>
-                            @endif
-
+                            <span class="{{ $task->statusEnum->cssClass() }} px-2 py-1 rounded-full text-sm">{{ $task->statusEnum->getTitle() }}</span>
+                        </td>
                         <td class="px-4 py-2 border-b text-right w-32">
                             <a href="{{ route('tasks.edit', $task) }}" class="text-blue-500 hover:underline">Edit</a>
                             <form action="{{ route('tasks.destroy', $task) }}" method="POST" class="inline">

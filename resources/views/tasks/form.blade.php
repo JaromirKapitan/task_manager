@@ -33,9 +33,11 @@
             <div class="mb-4">
                 <label for="status" class="block text-gray-700 font-bold mb-2">Status *</label>
                 <select name="status" id="status" class="w-full px-3 py-2 border rounded" required>
-                    <option value="todo" {{ old('status', $model->status) == 'todo' ? 'selected' : '' }}>To Do</option>
-                    <option value="doing" {{ old('status', $model->status) == 'doing' ? 'selected' : '' }}>Doing</option>
-                    <option value="done" {{ old('status', $model->status) == 'done' ? 'selected' : '' }}>Done</option>
+                    @foreach(\App\Enums\TaskStatus::cases() as $status)
+                        <option value="{{ $status->value }}" {{ old('status', $model->status) == $status->value ? 'selected' : '' }}>
+                            {{ $status->getTitle() }}
+                        </option>
+                    @endforeach
                 </select>
                 @error('status')
                     <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
