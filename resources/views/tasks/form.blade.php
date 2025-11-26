@@ -15,7 +15,7 @@
             @endif
 
             <div class="mb-4">
-                <label for="title" class="block text-gray-700 font-bold mb-2">Title</label>
+                <label for="title" class="block text-gray-700 font-bold mb-2">Title *</label>
                 <input type="text" name="title" id="title" value="{{ old('title', $model->title) }}" class="w-full px-3 py-2 border rounded" required>
                 @error('title')
                     <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
@@ -23,7 +23,7 @@
             </div>
 
             <div class="mb-4">
-                <label for="description" class="block text-gray-700 font-bold mb-2">Description</label>
+                <label for="description" class="block text-gray-700 font-bold mb-2">Description *</label>
                 <textarea name="description" id="description" class="w-full px-3 py-2 border rounded" required>{{ old('description', $model->description) }}</textarea>
                 @error('description')
                     <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
@@ -31,7 +31,7 @@
             </div>
 
             <div class="mb-4">
-                <label for="status" class="block text-gray-700 font-bold mb-2">Status</label>
+                <label for="status" class="block text-gray-700 font-bold mb-2">Status *</label>
                 <select name="status" id="status" class="w-full px-3 py-2 border rounded" required>
                     <option value="todo" {{ old('status', $model->status) == 'todo' ? 'selected' : '' }}>To Do</option>
                     <option value="doing" {{ old('status', $model->status) == 'doing' ? 'selected' : '' }}>Doing</option>
